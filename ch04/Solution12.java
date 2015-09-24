@@ -1,3 +1,74 @@
+/**
+ *  @thought_process:
+ *
+ *  1). For problems that involve trees, we can try and see if recursion can
+ *      be applied to tackle the problem because trees are by nature a recursive
+ *      structure, recursion might be the most possible way to solve it.
+ *  2). To solve a problem with recursion, we must somehow re-express the
+ *      original problem in a recursive form.
+ *  3). A good start might be just define a function that represents the
+ *      original problem itself, without any changes. This is where we come
+ *      to the function F:
+ *
+ *          Define
+ *                          F: (T, V) => C
+ *          as the function that counts how many paths are there in the tree T
+ *          that sum up to the given value V.
+ *          The "path" may not have to start or end at the root or a leaf.
+ *          The number of such paths is recorded by C.
+ *
+ *  4). This problem is an "open-ended" problem: There is no tight bound to
+ *      the ends of a path. It could start with the root, but could not; it
+ *      could end at a leaf, but could not.
+ *  5). A good trick to attack such "open-ended" problem is to bound one end,
+ *      usually the starting side, because once we have something "bounded",
+ *      we immeidately have something "determined" and easier to be expressed
+ *      in a determined form.
+ *  6). Therefore, we define the function G:
+ *
+ *          Define
+ *                          G: (T, V) => C
+ *          as the function that counts how many paths are there in the Tree T
+ *          that sum up to the given value V.
+ *          The "path" *always* starts from the root of T, but may or may not
+ *          end at a leaf.
+ *
+ *  7). G can help us redefine, or, "break", the original function F into
+ *      smaller parts:
+ *
+ *              F(T, V) = G(T, V) + F(T.left, V) + F(T.right, V);
+ *
+ *      G(T, V) covers all the possible paths that start with the root, and
+ *      F(T.left, V) and F(T.right, V) covers all the possible paths that
+ *      start in the middle but still sum to V.
+ *  8). For G, we need to break it into two parts: the root node and the
+ *      children. Because the root node itself is also a path that starts
+ *      with the root, if its value is V, we need to count it as one path.
+ *      Then, we need to search in the subtrees to see how many paths are
+ *      there that sum up to (V-R.v), because these paths together with the
+ *      root node will form the wanted paths.
+ *  9). If we define M:
+ *
+ *      Define
+ *                          M: (N, V) => 0 if N.r != V, or
+ *                                       1 if N.r == V
+ *      where N is a node.
+ *      Then we can express G as:
+ *
+ *              G(T, V) = M(T, V) + G(T.left, V - T.v) + G(T.right, V - T.v)
+ *  10). Once we have the recursive expression of the problem, we need to work
+ *      on the edge conditions:
+ *          F(NULL, V) => 0: Given an empty tree, there is no path that sums
+ *                              up to the value V.
+ *          G(NULL, V) => 0: Same reason above.
+ *          M(NULL, V) => 0: Same reason above.
+ *          F(leaf, V) = G(leaf, V) = M(leaf, V).
+ *  11). We are done.
+ *  12). This is NOT the most optimal algorithm but I really want to use this
+ *      solution to record how to think about such recursive problems.
+ */
+
+
 import java.util.*;
 
 
