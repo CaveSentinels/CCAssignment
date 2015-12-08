@@ -8,18 +8,14 @@ var line_count = 0;
 var word_occurrence = {};
 var edit_distances = [];
 var word_list = [];
-var trigrams = {};
 var word_sorted_list = [];
+var trigrams = {};
 var sorted_trigrams = [];
 var trigrams_edit_distances = {};
 var sorted_edit_distances = [];
 
 // Get the file path.
 var file_path = process.argv[2];
-
-function dbg_print(obj) {
-    console.log(obj);
-}
 
 function split_line(line) {
     return line.split(/[0-9|\s|\_|\+|\-|\t|\n|\.|;|!|?|,|~|@|#|$|%|^|&|*|(|)|\\|\/|\||<|>|"|=|:]+/g);
@@ -123,7 +119,7 @@ function calc_edit_distance(str1, str2) {
     // Calculate the edit distance.
     for (var i = 1; i <= len1; ++i) {
         for (var j = 1; j <= len2; ++j) {
-            dist[i][j] = Math.min(dist[i-1][j-1] + (str1[i] == str2[j] ? 0 : 1),
+            dist[i][j] = Math.min(dist[i-1][j-1] + (str1[i-1] == str2[j-1] ? 0 : 1),
                 dist[i-1][j] + 1, dist[i][j-1] + 1
             );
         }
